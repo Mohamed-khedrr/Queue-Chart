@@ -3,10 +3,10 @@
 // VARIABLES 
 let period = 100;
 // the arrival time ratio
+// FIX THIS VAR SHOULD BE INPUTS
 let lamda = 4,
     meu = 6,
     capacity = 4;
-
 // CHART TIME LINE
 const labels = [];
 
@@ -14,9 +14,10 @@ const labels = [];
 let values = [];
 
 // EQUATION TO CALCULATE CUSTOMERS AT SPECIFIC TIME
-function getCustomers(lamda, meu, t, capacity) {
+function getCustomers(arrivingTime, servingTime, capacity, period) {
 
-    let servingTime = meu, arrivingTime = lamda, waiting = 0;
+    let waiting = 0;
+
     let arr = [];
     for (let i = 0; i < arrivingTime; i++) {
         arr.push(0);
@@ -36,7 +37,7 @@ function getCustomers(lamda, meu, t, capacity) {
 }
 
 
-values = getCustomers(lamda, meu, period, capacity);
+values = getCustomers(lamda, meu, capacity, period);
 
 
 
@@ -88,4 +89,11 @@ const myChart = new Chart(
     document.getElementById('myChart'),
     config
 );
+
+function getCustomersAtSpecificTime(t) {
+    let ans = getCustomers(lamda, meu, capacity, t);
+    let l = ans.length
+    return (ans[l - 1]);
+}
+
 
