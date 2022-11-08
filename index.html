@@ -5,17 +5,96 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <title></title>
 </head>
 
-<body>
+<body class="p-3 ">
+    <!-- ==================== Modal ==================== -->
+    <!-- Button trigger modal -->
+    <div class="d-flex justify-content-center mb-4">
+        <button type="button" class="btn btn-primary mx-3" id="modal-draw-chart-button" data-bs-toggle="modal"
+            data-bs-target="#exampleModalDraw">
+            Draw Chart
+        </button>
 
-    <div class="chart-continer">
-        <canvas id="myChart"></canvas>
+        <button type="button" class="btn btn-success  mx-3" id="enter-time-button" data-bs-toggle="modal"
+            data-bs-target="#exampleModalEnter">
+            Enter Time
+        </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade draw-chart-modal" id="exampleModalDraw" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Draw Chart</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="arriving-time" class="col-form-label">Arriving Time</label>
+                            <input type="text" class="form-control" id="arriving-time">
+                        </div>
+                        <div class="mb-3">
+                            <label for="serving-time" class="col-form-label">Serving Time</label>
+                            <input type="text" class="form-control" id="serving-time"></input>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="capacity" class="col-form-label">Capacity</label>
+                            <input type="text" class="form-control" id="capacity"></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="draw-chart-btn">Draw
+                        Chart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =========================================== -->
+    <div class="modal fade draw-chart-modal" id="exampleModalEnter" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Time</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body enter-modal-body ">
+                    <form>
+                        <div class="mb-3">
+                            <label for="arriving-time" class="col-form-label">Time</label>
+                            <input type="text" class="form-control" id="specific-time-input">
+                        </div>
+                    </form>
+                </div>
+                <div class="enter-modal-content">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-enter-modal"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="enter-specific-button">Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =========================================== -->
+
+    <div class="chart-continer ">
+        <canvas id="myChart" class=" h-50"></canvas>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
     <script src="js/main.js"></script>
 
 </body>

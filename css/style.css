@@ -1,0 +1,6 @@
+body {
+  height: 100vh;
+}
+#myChart {
+  height: 650px !important ;
+}
