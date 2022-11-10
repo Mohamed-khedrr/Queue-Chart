@@ -119,7 +119,7 @@ function drawChart(param) {
         }
     };
 
-    //  intialize Chart
+    //  initialize Chart
     let myChart = new Chart(
         document.getElementById('myChart'),
         config
