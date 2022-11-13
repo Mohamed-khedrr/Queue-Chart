@@ -21,7 +21,11 @@
 
         <button type="button" class="btn btn-success  mx-3" id="enter-time-button" data-bs-toggle="modal"
             data-bs-target="#exampleModalEnter">
-            Enter Time
+            N(t)
+        </button>
+        <button type="button" class="btn btn-success  mx-3" id="ti-btn" data-bs-toggle="modal"
+            data-bs-target="#ti-modal">
+            Ti
         </button>
     </div>
     <!-- Modal -->
@@ -40,12 +44,13 @@
                             <input type="text" class="form-control" id="arriving-time" autocomplete="off">
                         </div>
                         <div class="mb-3">
-                            <label for="serving-time" class="col-form-label">Serving Time</label>
+                            <label for="serving-time" class="col-form-label">Serving Time </label>
                             <input type="text" class="form-control" id="serving-time" autocomplete="off"></input>
                         </div>
 
                         <div class="mb-3">
-                            <label for="capacity" class="col-form-label">Capacity</label>
+                            <label for="capacity" class="col-form-label">Capacity <strong
+                                    class="color-red">(K-1)</strong></label>
                             <input type="text" class="form-control" id="capacity" autocomplete="off"></input>
                         </div>
                     </form>
@@ -58,6 +63,8 @@
             </div>
         </div>
     </div>
+    <!-- =========================================== -->
+
     <!-- =========================================== -->
     <div class="modal fade draw-chart-modal" id="exampleModalEnter" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -82,6 +89,26 @@
                         data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="enter-specific-button">Done
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =========================================== -->
+    <div class="modal fade draw-chart-modal" id="ti-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Time</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body enter-modal-body ">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-enter-modal"
+                        data-bs-dismiss="modal">Close</button>
+
                 </div>
             </div>
         </div>

@@ -4,7 +4,8 @@
 let period = 100;
 let arrivingTime = 0,
     servingTime = 0,
-    capacity = 0;
+    capacity = 0,
+    ti = 0;
 
 // CHART TIME LINE
 const labels = [];
@@ -22,8 +23,11 @@ let drawChartModal = document.querySelector('.draw-chart-modal');
 let modalDrawChartButton = document.querySelector('#modal-draw-chart-button');
 let spacificTimeButton = document.querySelector('#enter-specific-button');
 let spacificTimeInput = document.querySelector('#specific-time-input');
+let TiButton = document.querySelector('#ti-btn');
 
 enterTimeButton.style.display = "none";
+TiButton.style.display = "none";
+
 
 // Event TO ACTIVE CHART
 drawChartButton.addEventListener('click', () => {
@@ -33,6 +37,8 @@ drawChartButton.addEventListener('click', () => {
     modalDrawChartButton.style.display = "none"
     drawChart()
     enterTimeButton.style.display = "inline";
+    TiButton.style.display = "inline";
+
 
 })
 
@@ -43,6 +49,8 @@ spacificTimeButton.addEventListener('click', () => {
     document.querySelector('.enter-modal-body').style.display = "none";
     document.querySelector('.enter-modal-content').innerHTML = (`<h3 class="mx-2">At Time (${time}) Customers = ${customers}</h3>`)
     spacificTimeButton.style.display = "none";
+    console.log(getTi());
+
 })
 
 // EVENT CLOSE THE ENTER TIME MODAL AND RESTORE CHANGES
@@ -51,6 +59,12 @@ document.querySelector('#close-enter-modal').addEventListener('click', () => {
     document.querySelector('.enter-modal-body').style.display = "block";
     document.querySelector('.enter-modal-content').innerHTML = ""
     document.querySelector('.enter-modal-content').display = "none"
+})
+
+
+//EVENT TO PRINT TI IN IT'S MODAL
+TiButton.addEventListener('click', () => {
+    document.querySelector('#ti-modal .modal-body').innerHTML = `<h3>Ti = ${getTi()}</h3>`
 })
 
 
@@ -133,5 +147,28 @@ function getCustomersAtSpecificTime(t) {
     let l = ans.length
     return (ans[l - 1]);
 }
+
+function getCustomersNumberUsingEq(time) {
+    let lefSide = Math.floor(time / arrivingTime)
+    let righSide = Math.floor((time / servingTime) - (arrivingTime / servingTime));
+    return (lefSide - righSide);
+}
+
+
+function getTi() {
+    let i = 0;
+    let n = 0;
+    while (true) {
+        n = getCustomersNumberUsingEq(i)
+        if (n >= capacity + 1) {
+            return i;
+        }
+        i++;
+    }
+}
+
+
+
+
 
 
