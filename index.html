@@ -27,6 +27,12 @@
             data-bs-target="#ti-modal">
             Ti
         </button>
+
+        <button type="button" class="btn btn-success  mx-3" id="wq-button" data-bs-toggle="modal"
+            data-bs-target="#wq-modal">
+            Wq(n)
+        </button>
+
     </div>
     <!-- Modal -->
     <div class="modal fade draw-chart-modal" id="exampleModalDraw" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -114,6 +120,34 @@
         </div>
     </div>
     <!-- =========================================== -->
+    <div class="modal fade draw-chart-modal" id="wq-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Customer Number</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body enter-modal-body ">
+                    <form>
+                        <div class="mb-3">
+                            <label for="arriving-time" class="col-form-label">Customer Number</label>
+                            <input type="text" class="form-control" id="specific-number-input" autocomplete="off">
+                        </div>
+                    </form>
+                </div>
+                <div class="enter-modal-content">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-enter-modal2"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="enter-specific-number">Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =========================================== -->
 
     <div class="chart-continer ">
         <canvas id="myChart" class=" h-50"></canvas>
@@ -123,7 +157,7 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
     <script src="Chart.js-3.9.1/dist/chart.min.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js" type="module"></script>
 
 </body>
 

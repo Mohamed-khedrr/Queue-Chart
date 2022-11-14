@@ -1,5 +1,5 @@
 "use strict"
-
+import { Queue } from "./queueClass.js"
 // INITIALIZE THE GLOBAL VARIABLES 
 let period = 100;
 let arrivingTime = 0,
@@ -24,9 +24,16 @@ let modalDrawChartButton = document.querySelector('#modal-draw-chart-button');
 let spacificTimeButton = document.querySelector('#enter-specific-button');
 let spacificTimeInput = document.querySelector('#specific-time-input');
 let TiButton = document.querySelector('#ti-btn');
+let wqButton = document.querySelector('#wq-button')
+let spacificNumberButton = document.querySelector('#enter-specific-number')
+let spacificNumberInput = document.querySelector('#specific-number-input')
 
+
+// HIDE BUTTONS
 enterTimeButton.style.display = "none";
 TiButton.style.display = "none";
+wqButton.style.display = "none";
+
 
 
 // Event TO ACTIVE CHART
@@ -38,6 +45,7 @@ drawChartButton.addEventListener('click', () => {
     drawChart()
     enterTimeButton.style.display = "inline";
     TiButton.style.display = "inline";
+    wqButton.style.display = "inline";
 
 
 })
@@ -46,19 +54,37 @@ drawChartButton.addEventListener('click', () => {
 spacificTimeButton.addEventListener('click', () => {
     let time = Number(spacificTimeInput.value);
     let customers = (getCustomersAtSpecificTime(time));
-    document.querySelector('.enter-modal-body').style.display = "none";
-    document.querySelector('.enter-modal-content').innerHTML = (`<h3 class="mx-2">At Time (${time}) Customers = ${customers}</h3>`)
+    document.querySelector('#exampleModalEnter .enter-modal-body').style.display = "none";
+    document.querySelector('#exampleModalEnter .enter-modal-content').innerHTML = (`<h3 class="mx-2">At Time (${time}) Customers = ${customers}</h3>`)
     spacificTimeButton.style.display = "none";
-    console.log(getTi());
 
 })
 
-// EVENT CLOSE THE ENTER TIME MODAL AND RESTORE CHANGES
+// Event FOR THE Enter Customer Number
+spacificNumberButton.addEventListener('click', () => {
+    let num = Number(spacificNumberInput.value);
+    let wq = calcWq(num)
+    document.querySelector('#wq-modal .enter-modal-body').style.display = "none";
+    document.querySelector('#wq-modal .enter-modal-content').innerHTML = (`<h3 class="mx-2">Customer (${num}) waiting time = ${wq}</h3>`)
+    spacificNumberButton.style.display = "none";
+})
+
+
+// EVENT CLOSE THE ENTER NUMBER MODAL AND RESTORE CHANGES
 document.querySelector('#close-enter-modal').addEventListener('click', () => {
     spacificTimeButton.style.display = "inline";
     document.querySelector('.enter-modal-body').style.display = "block";
     document.querySelector('.enter-modal-content').innerHTML = ""
     document.querySelector('.enter-modal-content').display = "none"
+})
+
+
+// EVENT CLOSE THE ENTER TIME MODAL AND RESTORE CHANGES
+document.querySelector('#close-enter-modal2').addEventListener('click', () => {
+    spacificNumberButton.style.display = "inline";
+    document.querySelector('#wq-modal .enter-modal-body').style.display = "block";
+    document.querySelector('#wq-modal .enter-modal-content').innerHTML = ""
+    document.querySelector('#wq-modal .enter-modal-content').display = "none"
 })
 
 
@@ -148,13 +174,14 @@ function getCustomersAtSpecificTime(t) {
     return (ans[l - 1]);
 }
 
+// FUNCTION TO CALCULATE CUSTOMERS WITHE THE OFFICAL EQ
 function getCustomersNumberUsingEq(time) {
     let lefSide = Math.floor(time / arrivingTime)
     let righSide = Math.floor((time / servingTime) - (arrivingTime / servingTime));
     return (lefSide - righSide);
 }
 
-
+// FUNCTION THAT GET TI USING TRIAL AND ERROR
 function getTi() {
     let i = 0;
     let n = 0;
@@ -166,6 +193,26 @@ function getTi() {
         i++;
     }
 }
+
+
+// FUNCTION TO CALC WQ
+function calcWq(n) {
+    let wq = servingTime - arrivingTime
+    let ti = getTi();
+    if (n < (ti * (1 / arrivingTime))) {
+
+        wq *= (n - 1);
+        return ` Wq(${n}) = ${wq}`;
+    } else {
+        let wq1 = wq, wq2 = wq;
+        wq1 *= ((ti * (1 / arrivingTime)) - 3);
+        wq2 *= ((ti * (1 / arrivingTime)) - 2);
+        return ` Wq(${n}) = ${wq1} <b>OR</b> ${wq2}`;
+    }
+
+}
+
+
 
 
 
