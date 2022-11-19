@@ -3,8 +3,23 @@ body {
 }
 #myChart {
   height: 650px !important ;
+  width: 80%;
 }
 
 .color-red {
   color: red;
+}
+
+.output {
+  background-color: #0000000b;
+  width: 20% !important;
+}
+.output input {
+  /* width: 180px; */
+}
+.chart-continer {
+  /* width: 90vw; */
+}
+#myChart {
+  background-color: #0000000b;
 }

@@ -1,11 +1,21 @@
 "use strict"
-import { Queue } from "./queueClass.js"
-// INITIALIZE THE GLOBAL VARIABLES 
-let period = 100;
-let arrivingTime = 0,
-    servingTime = 0,
-    capacity = 0,
-    ti = 0;
+
+import { Determenstic } from "./determenstic.js";
+import { Stochastic } from "./stochastic.js"
+// determensticQueue();
+
+
+
+
+// INITIALIZE THE GLOBAL VARIABLES
+let queueType,
+    queueObject,
+    period = 100,
+    arrivalTime = 0,
+    serviceTime = 0,
+    capacity = 0;
+
+
 
 // CHART TIME LINE
 const labels = [];
@@ -14,203 +24,244 @@ const labels = [];
 let values = [];
 
 // DOM ELEMENTS
-let enterTimeButton = document.querySelector('#enter-time-button')
-let drawChartButton = document.querySelector('#draw-chart-btn');
-let arrivingTimeInput = document.querySelector('#arriving-time');
-let servingTimeInput = document.querySelector('#serving-time');
-let capacityInput = document.querySelector('#capacity');
-let drawChartModal = document.querySelector('.draw-chart-modal');
-let modalDrawChartButton = document.querySelector('#modal-draw-chart-button');
-let spacificTimeButton = document.querySelector('#enter-specific-button');
-let spacificTimeInput = document.querySelector('#specific-time-input');
-let TiButton = document.querySelector('#ti-btn');
-let wqButton = document.querySelector('#wq-button')
-let spacificNumberButton = document.querySelector('#enter-specific-number')
-let spacificNumberInput = document.querySelector('#specific-number-input')
+
+let closeMainModalBtn = document.querySelector('#close-main-modal-btn');
+let submitMainModalBtn = document.querySelector('#submit-main-modal-btn');
+let serviceTimeInput = document.querySelector('#serving-time-input');
+let serviceTimeLabel = document.querySelector('#serving-time-label');
+let arrivalTimeInput = document.querySelector('#arriving-time-input');
+let arrivalTimeLabel = document.querySelector('#arriving-time-label');
+let mainModalLabel = document.querySelector('#main-modal-label');
+let hiddenTypeInput = document.querySelector('#hidden-type-input');
+let deterministicBtn = document.querySelector('#deterministic-btn');
+let capacityLabel = document.querySelector('#capacity-label');
+let capacityInput = document.querySelector('#capacity-input');
+let NtBtn = document.querySelector('#Nt-btn');
+let resultContainer = document.querySelector('#result-container');
+let resultHeader = document.querySelector('#result');
+let ntInput = document.querySelector('#num-customer');
+let ntOutput = document.querySelector('#nt-result');
+let wqInput = document.querySelector('#waiting-time');
+let wqOutput = document.querySelector('#wq-result');
+let tiOutput = document.querySelector('#ti-output');
+let outputContainer = document.querySelector('#output-container');
+let mm1Btn = document.querySelector('#mm1-btn');
+let mm1kBtn = document.querySelector('#mm1k-btn');
+let mmcBtn = document.querySelector('#mmc-btn');
+let mmckBtn = document.querySelector('#mmck-btn');
+let serverContainer = document.querySelector('#server-container');
+let serverInput = document.querySelector('#servers-input');
+let servingTimeContiner = document.querySelector('#serving-time-container');
+let arrivalTimeContiner = document.querySelector('#arrival-time-container');
+let capacityContiner = document.querySelector('#capacity-container');
 
 
-// HIDE BUTTONS
-enterTimeButton.style.display = "none";
-TiButton.style.display = "none";
-wqButton.style.display = "none";
+// HIDE OUTPUT CONTAINER 
+hideElement(outputContainer)
+// HIDE SERVER INPUT
+serverContainer.style.display = "none";
 
-
-
-// Event TO ACTIVE CHART
-drawChartButton.addEventListener('click', () => {
-    arrivingTime = Number(arrivingTimeInput.value);
-    servingTime = Number(servingTimeInput.value);
-    capacity = Number(capacityInput.value);
-    modalDrawChartButton.style.display = "none"
-    drawChart()
-    enterTimeButton.style.display = "inline";
-    TiButton.style.display = "inline";
-    wqButton.style.display = "inline";
-
-
-})
-
-// Event FOR THE Enter TIME BUTTON 
-spacificTimeButton.addEventListener('click', () => {
-    let time = Number(spacificTimeInput.value);
-    let customers = (getCustomersAtSpecificTime(time));
-    document.querySelector('#exampleModalEnter .enter-modal-body').style.display = "none";
-    document.querySelector('#exampleModalEnter .enter-modal-content').innerHTML = (`<h3 class="mx-2">At Time (${time}) Customers = ${customers}</h3>`)
-    spacificTimeButton.style.display = "none";
-
-})
-
-// Event FOR THE Enter Customer Number
-spacificNumberButton.addEventListener('click', () => {
-    let num = Number(spacificNumberInput.value);
-    let wq = calcWq(num)
-    document.querySelector('#wq-modal .enter-modal-body').style.display = "none";
-    document.querySelector('#wq-modal .enter-modal-content').innerHTML = (`<h3 class="mx-2">Customer (${num}) waiting time = ${wq}</h3>`)
-    spacificNumberButton.style.display = "none";
-})
-
-
-// EVENT CLOSE THE ENTER NUMBER MODAL AND RESTORE CHANGES
-document.querySelector('#close-enter-modal').addEventListener('click', () => {
-    spacificTimeButton.style.display = "inline";
-    document.querySelector('.enter-modal-body').style.display = "block";
-    document.querySelector('.enter-modal-content').innerHTML = ""
-    document.querySelector('.enter-modal-content').display = "none"
-})
-
-
-// EVENT CLOSE THE ENTER TIME MODAL AND RESTORE CHANGES
-document.querySelector('#close-enter-modal2').addEventListener('click', () => {
-    spacificNumberButton.style.display = "inline";
-    document.querySelector('#wq-modal .enter-modal-body').style.display = "block";
-    document.querySelector('#wq-modal .enter-modal-content').innerHTML = ""
-    document.querySelector('#wq-modal .enter-modal-content').display = "none"
-})
-
-
-//EVENT TO PRINT TI IN IT'S MODAL
-TiButton.addEventListener('click', () => {
-    document.querySelector('#ti-modal .modal-body').innerHTML = `<h3>Ti = ${getTi()}</h3>`
-})
-
-
-//HANDLE THE EQUATION THAT SET VALUES AND SET CONFIG DATA
-function getCustomers(arrivingTime, servingTime, capacity, period) {
-    let waiting = 0;
-    let arr = [];
-    for (let i = 0; i < arrivingTime; i++) {
-        arr.push(0);
-    }
-    for (let i = arrivingTime; i <= period; i++) {
-        if ((i - arrivingTime) % servingTime == 0 && i > servingTime && waiting > 0) waiting--;
-        if (i % arrivingTime == 0 && waiting < capacity) waiting++;
-        arr[i] = waiting;
-    }
-    return arr;
+// CONTROL DOM FUNCTIONS
+function hideElement(element) {
+    element.style.display = "none";
 }
 
-// LOOP TO PUSH THE TIME LINE VALUES
-for (let i = 0; i <= period; i++) {
-    labels.push(i);
+function showElement(element) {
+    element.style.display = "inline";
 }
 
-// INIT THE CHART 
-function drawChart(param) {
+function clearInput(inputElement) {
+    inputElement.value = "";
+}
 
-    values = getCustomers(arrivingTime, servingTime, capacity, period);
+function getInputValue(inputElement) {
+    return (inputElement.value);
+}
 
-    // DATA OF THE CHART
-    let data = {
-        labels: labels,
-        datasets: [{
-            label: 'Customers over time',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: values,
-            fill: false,
-            stepped: true,
-            pointStyle: '',
-            pointRadius: 0,
-            pointBorderColor: 'rgb(0, 0, 0)'
-        }]
-    };
+// function OneInputModal(labelText, hiddenValue) {
+//     hiddenTypeInput.value = hiddenValue;
+//     hideElement(serviceTimeInput);
+//     hideElement(serviceTimeLabel);
+//     hideElement(capacityInput);
+//     hideElement(capacityLabel);
+//     let originalText = arrivalTimeLabel.value;
+//     arrivalTimeLabel.value = labelText;
+// }
 
-    // CONFIG OF THE CHART
-    let config = {
-        type: 'line',
-        data: data,
-        options: {
-            responsive: true,
-            interaction: {
-                intersect: false,
-                axis: 'x'
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: (ctx) => 'Step ' + ctx.chart.data.datasets[0].stepped + ' Interpolation',
-                },
-                legend: {
-                    labels: {
-                        usePointStyle: false,
-                    },
-                }
-            }
+
+
+// SET A DETERMINISTIC QUEUE ON CLICK ON THE DETERMINISTIC BTN
+// SET THE HIDDEN VALUE 
+deterministicBtn.addEventListener('click', () => {
+    hiddenTypeInput.value = 'setDeterministic';
+    showElement(capacityContiner);
+    hideElement(serverContainer)
+    showElement(arrivalTimeContiner);
+    showElement(servingTimeContiner);
+    setQueue();
+})
+
+// MM1 EVENT
+mm1Btn.addEventListener('click', () => {
+    hiddenTypeInput.value = 'mm1';
+    hideElement(capacityContiner);
+    hideElement(serverContainer)
+    showElement(arrivalTimeContiner);
+    showElement(servingTimeContiner);
+    setQueue();
+})
+
+// MM1K EVENT
+mm1kBtn.addEventListener('click', () => {
+    hiddenTypeInput.value = 'mm1k';
+    hideElement(capacityContiner);
+    showElement(serverContainer)
+    showElement(arrivalTimeContiner);
+    showElement(servingTimeContiner);
+    setQueue();
+})
+
+mmcBtn.addEventListener('click', () => {
+    hiddenTypeInput.value = 'mmc';
+    hideElement(capacityContiner);
+    showElement(serverContainer)
+    showElement(arrivalTimeContiner);
+    showElement(servingTimeContiner);
+    setQueue();
+})
+
+
+mmckBtn.addEventListener('click', () => {
+    hiddenTypeInput.value = 'mmck';
+    showElement(capacityContiner);
+    showElement(serverContainer)
+    showElement(arrivalTimeContiner);
+    showElement(servingTimeContiner);
+    setQueue();
+
+})
+
+
+// FUNCTION TO SET AN NEW QUEUE NAD CHECK THE HIDDEN VALUE TO KNOW THE QUEUE TYPE
+function setQueue() {
+    submitMainModalBtn.addEventListener('click', () => {
+        switch (hiddenTypeInput.value) {
+            case 'setDeterministic':
+                setDeterministicValues();
+                break;
+            case 'mm1':
+                setMM1Queue();
+                break;
+            case 'mm1k':
+                setMM1KQueue();
+                break;
+            case 'mmc':
+                setMMCQueue();
+                break;
+            case 'mmck':
+                setMMCKQueue();
+                break;
         }
-    };
 
-    //  initialize Chart
-    let myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-    );
+    })
+}
+
+// GET N(T) ON KEYUP AND OUT THE RESULT
+ntInput.addEventListener('keyup', () => {
+    let time = Number(ntInput.value);
+    let nt = queueObject.getCustomersAtSpecificTime(time);
+    ntOutput.innerHTML = nt
+})
+
+// GET W(q) ON KEYUP AND OUT THE RESULT
+wqInput.addEventListener('keyup', () => {
+    let customerNum = Number(wqInput.value);
+    let wq = queueObject.calcWq(customerNum);
+    wqOutput.innerHTML = wq
+})
+
+
+// GET THE INPUT VALUES AND INIT AN OBJECT FROM DETERMINISTIC CLASS
+function setDeterministicValues() {
+    showElement(outputContainer)
+    serviceTime = Number(getInputValue(serviceTimeInput));
+    arrivalTime = Number(getInputValue(arrivalTimeInput));
+    capacity = Number(getInputValue(capacityInput));
+    clearInput(serviceTimeInput);
+    clearInput(arrivalTimeInput);
+    clearInput(capacityInput);
+    queueObject = new Determenstic(arrivalTime, serviceTime, capacity);
+    tiOutput.innerHTML = queueObject.getTi()
+
+    //DRAW THE CHART 
+    queueObject.drawChart()
+}
+
+
+// GET THE INPUT VALUES AND INIT AN OBJECT FROM DETERMINISTIC CLASS
+function setMM1Queue() {
+    showElement(outputContainer)
+    serviceTime = eval(getInputValue(serviceTimeInput));
+    arrivalTime = eval(getInputValue(arrivalTimeInput));
+    clearInput(serviceTimeInput);
+    clearInput(arrivalTimeInput);
+    queueObject = new Stochastic(arrivalTime, serviceTime, 0);
+    let output = queueObject.MM1Queue();
+    outputContainer.innerHTML = output;
+}
+
+
+// GET THE INPUT VALUES AND INIT AN OBJECT FROM DETERMINISTIC CLASS
+function setMM1KQueue() {
+    showElement(outputContainer)
+    serviceTime = eval(getInputValue(serviceTimeInput));
+    arrivalTime = eval(getInputValue(arrivalTimeInput));
+    capacity = eval(getInputValue(serverInput));
+    clearInput(serviceTimeInput);
+    clearInput(arrivalTimeInput);
+    clearInput(capacityInput);
+    queueObject = new Stochastic(arrivalTime, serviceTime, capacity);
+    let output = queueObject.MM1KQueue();
+    outputContainer.innerHTML = output;
+}
+
+
+
+// GET THE INPUT VALUES AND INIT AN OBJECT FROM DETERMINISTIC CLASS
+function setMMCQueue() {
+    showElement(outputContainer)
+    serviceTime = eval(getInputValue(serviceTimeInput));
+    arrivalTime = eval(getInputValue(arrivalTimeInput));
+    capacity = eval(getInputValue(serverInput));
+    // let c = eval(getInputValue(serverInput));
+    clearInput(serviceTimeInput);
+    clearInput(arrivalTimeInput);
+    clearInput(capacityInput);
+    clearInput(serverInput);
+    queueObject = new Stochastic(arrivalTime, serviceTime, capacity);
+    let output = queueObject.mmc();
+    outputContainer.innerHTML = output;
+}
+
+
+function setMMCKQueue() {
+    showElement(outputContainer)
+    serviceTime = eval(getInputValue(serviceTimeInput));
+    arrivalTime = eval(getInputValue(arrivalTimeInput));
+    capacity = eval(getInputValue(capacityInput));
+    let c = eval(getInputValue(serverInput));
+    queueObject = new Stochastic(arrivalTime, serviceTime, capacity)
+    let output = queueObject.mmck(c)
+    outputContainer.innerHTML = output;
 
 }
 
-// Function to get Customers at Spacific
-function getCustomersAtSpecificTime(t) {
-    let ans = getCustomers(arrivingTime, servingTime, capacity, t, t);
-    let l = ans.length
-    return (ans[l - 1]);
-}
-
-// FUNCTION TO CALCULATE CUSTOMERS WITHE THE OFFICAL EQ
-function getCustomersNumberUsingEq(time) {
-    let lefSide = Math.floor(time / arrivingTime)
-    let righSide = Math.floor((time / servingTime) - (arrivingTime / servingTime));
-    return (lefSide - righSide);
-}
-
-// FUNCTION THAT GET TI USING TRIAL AND ERROR
-function getTi() {
-    let i = 0;
-    let n = 0;
-    while (true) {
-        n = getCustomersNumberUsingEq(i)
-        if (n >= capacity + 1) {
-            return i;
-        }
-        i++;
-    }
-}
 
 
-// FUNCTION TO CALC WQ
-function calcWq(n) {
-    let wq = servingTime - arrivingTime
-    let ti = getTi();
-    if (n < (ti * (1 / arrivingTime))) {
 
-        wq *= (n - 1);
-        return ` Wq(${n}) = ${wq}`;
-    } else {
-        let wq1 = wq, wq2 = wq;
-        wq1 *= ((ti * (1 / arrivingTime)) - 3);
-        wq2 *= ((ti * (1 / arrivingTime)) - 2);
-        return ` Wq(${n}) = ${wq1} <b>OR</b> ${wq2}`;
-    }
 
-}
+
+
 
 
 

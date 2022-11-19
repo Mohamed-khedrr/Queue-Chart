@@ -14,150 +14,147 @@
     <!-- ==================== Modal ==================== -->
     <!-- Button trigger modal -->
     <div class="d-flex justify-content-center mb-4">
-        <button type="button" class="btn btn-primary mx-3" id="modal-draw-chart-button" data-bs-toggle="modal"
-            data-bs-target="#exampleModalDraw">
-            Draw Chart
+        <button type="button" class="btn btn-primary mx-3" id="deterministic-btn" data-bs-toggle="modal"
+            data-bs-target="#main-modal">
+            Deterministic
+        </button>
+        <button type="button" class="btn btn-primary mx-3" id="mm1-btn" data-bs-toggle="modal"
+            data-bs-target="#main-modal">
+            M/M/1
+        </button>
+        <button type="button" class="btn btn-primary mx-3" id="mm1k-btn" data-bs-toggle="modal"
+            data-bs-target="#main-modal">
+            M/M/1/K
+        </button>
+        <button type="button" class="btn btn-primary mx-3" id="mmc-btn" data-bs-toggle="modal"
+            data-bs-target="#main-modal">
+            M/M/C
+        </button>
+        <button type="button" class="btn btn-primary mx-3" id="mmck-btn" data-bs-toggle="modal"
+            data-bs-target="#main-modal">
+            M/M/C/K
         </button>
 
-        <button type="button" class="btn btn-success  mx-3" id="enter-time-button" data-bs-toggle="modal"
-            data-bs-target="#exampleModalEnter">
+        <!-- <button type="button" class="btn btn-success  mx-3" id="Nt-btn" data-bs-toggle="modal"
+            data-bs-target="#main-modal">
             N(t)
         </button>
         <button type="button" class="btn btn-success  mx-3" id="ti-btn" data-bs-toggle="modal"
-            data-bs-target="#ti-modal">
+            data-bs-target="#main-modal">
             Ti
         </button>
 
         <button type="button" class="btn btn-success  mx-3" id="wq-button" data-bs-toggle="modal"
-            data-bs-target="#wq-modal">
+            data-bs-target="#main-modal">
             Wq(n)
-        </button>
+        </button> -->
 
     </div>
     <!-- Modal -->
-    <div class="modal fade draw-chart-modal" id="exampleModalDraw" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade draw-chart-modal" id="main-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Draw Chart</h1>
+                    <h1 class="modal-title fs-5" id="main-modal-label">Draw Chart</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+
                     <form>
-                        <div class="mb-3">
-                            <label for="arriving-time" class="col-form-label">Arriving Time</label>
-                            <input type="text" class="form-control" id="arriving-time" autocomplete="off">
+                        <div class="mb-3" id="arrival-time-container">
+                            <label for="arriving-time-input" id="arriving-time-label" class="col-form-label">Arriving
+                                Time</label>
+                            <input type="text" class="form-control" id="arriving-time-input" autocomplete="off">
                         </div>
-                        <div class="mb-3">
-                            <label for="serving-time" class="col-form-label">Serving Time </label>
-                            <input type="text" class="form-control" id="serving-time" autocomplete="off"></input>
+                        <div class="mb-3" id="serving-time-container">
+                            <label for="serving-time-input" id="serving-time-label" class="col-form-label">Serving Time
+                            </label>
+                            <input type="text" class="form-control" id="serving-time-input" autocomplete="off"></input>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="capacity" class="col-form-label">Capacity <strong
+                        <div class="mb-3" id="server-container">
+                            <label for="capacity-input" id="servers-label" class="col-form-label">Servers <strong
+                                    class="color-red">(C)</strong></label>
+                            <input type="text" class="form-control" id="servers-input" autocomplete="off"></input>
+                        </div>
+
+                        <div class="mb-3" id="capacity-container">
+                            <label for="capacity-input" id="capacity-label" class="col-form-label">Capacity <strong
                                     class="color-red">(K-1)</strong></label>
-                            <input type="text" class="form-control" id="capacity" autocomplete="off"></input>
+                            <input type="text" class="form-control" id="capacity-input" autocomplete="off"></input>
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="hidden-type-input" hidden
+                                autocomplete="off"></input>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="draw-chart-btn">Draw
+                    <button type="button" class="btn btn-secondary" id="close-main-modal-btn"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submit-main-modal-btn" data-bs-dismiss="modal"
+                        id="draw-chart-btn">Draw
                         Chart</button>
                 </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- =========================================== -->
+
+
+
+    <div class="chart-continer d-flex ">
+        <canvas id="myChart" class=" h-50 p-3 rounded-2 "></canvas>
+
+        <!-- ================================================= -->
+        <div class="output p-3 ms-3 rounded-2  pt-5 " id="output-container">
+            <div class="customer-number">
+                <div class="result-header">
+                    <h2 class="secondary-heading">Number of customer n(t)</h2>
+                    <input type="text" name="arrival" id="num-customer" placeholder="n(t)"
+                        class="input__field input-customer form-control" min="0">
+                </div>
+                <div id="nt-result" class=" mb-5 mt-2">
+                    <!-- Result -->
+                </div>
+                <hr>
+                <div class="waiting time mt-4 mb-5">
+                    <div class="result-header">
+                        <h2 class="secondary-heading">Waiting time w<sub>q</sub>(t)</h2>
+                        <input type="text" name="arrival" id="waiting-time" placeholder="wq(t)"
+                            class="input__field input-waiting form-control" min="0">
+                    </div>
+                    <div id="wq-result" class=" mt-2">
+                        <!-- Result -->
+                    </div>
+
+                </div>
+                <hr>
+
+                <div class=" mt-4">
+                    <div class="result-header">
+                        <h2 class="secondary-heading">T(i) = <span id="ti-output"></span></h2>
+                    </div>
+
+
+                </div>
+
             </div>
         </div>
-    </div>
-    <!-- =========================================== -->
-
-    <!-- =========================================== -->
-    <div class="modal fade draw-chart-modal" id="exampleModalEnter" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Time</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body enter-modal-body ">
-                    <form>
-                        <div class="mb-3">
-                            <label for="arriving-time" class="col-form-label">Time</label>
-                            <input type="text" class="form-control" id="specific-time-input" autocomplete="off">
-                        </div>
-                    </form>
-                </div>
-                <div class="enter-modal-content">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="close-enter-modal"
-                        data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="enter-specific-button">Done
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- =========================================== -->
-    <div class="modal fade draw-chart-modal" id="ti-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Time</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body enter-modal-body ">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="close-enter-modal"
-                        data-bs-dismiss="modal">Close</button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- =========================================== -->
-    <div class="modal fade draw-chart-modal" id="wq-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enter Customer Number</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body enter-modal-body ">
-                    <form>
-                        <div class="mb-3">
-                            <label for="arriving-time" class="col-form-label">Customer Number</label>
-                            <input type="text" class="form-control" id="specific-number-input" autocomplete="off">
-                        </div>
-                    </form>
-                </div>
-                <div class="enter-modal-content">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="close-enter-modal2"
-                        data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="enter-specific-number">Done
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- =========================================== -->
-
-    <div class="chart-continer ">
-        <canvas id="myChart" class=" h-50"></canvas>
-    </div>
 
 
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-    <script src="Chart.js-3.9.1/dist/chart.min.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/main.js" type="module"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+        <script src="Chart.js-3.9.1/dist/chart.min.js"></script>
+        <script src="js/bootstrap.bundle.js"></script>
+        <script src="js/main.js" type="module"></script>
 
 </body>
 
